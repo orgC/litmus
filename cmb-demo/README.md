@@ -15,6 +15,7 @@
 
 # 通过API 调用 执行 pod-delete 并 查看结果
 
+```
 oc config view -o jsonpath='{"Cluster name\tServer\n"}{range .clusters[*]}{.name}{"\t"}{.cluster.server}{"\n"}{end}'
 
 export CLUSTER_NAME="console-ocp3-ocp-zz:8443"
@@ -23,7 +24,6 @@ export CLUSTER_NAME="console-ocp3-ocp-zz:8443"
 APISERVER=$(oc config view -o jsonpath="{.clusters[?(@.name==\"$CLUSTER_NAME\")].cluster.server}")
 
 TOKEN=$(oc -n litmus get secret litmus-admin-token-mfmbm -o jsonpath='{.data.token}' | base64 -d)
-
 
 curl -s -o /dev/null -k \
     -X POST \
@@ -77,23 +77,26 @@ curl -s -o /dev/null -k \
 }
 EOF
 
+
 curl -s $APISERVER/apis/litmuschaos.io/v1alpha1/namespaces/litmus/chaosengines/nginx-chaos --header "Authorization: Bearer $TOKEN" --insecure
+```
 
 # 删除 chaosengines 
 
+```
 curl -s -o /dev/null -k \
     -X DELETE \
     -H "Authorization: Bearer $TOKEN" \
  $APISERVER/apis/litmuschaos.io/v1alpha1/namespaces/litmus/chaosengines/nginx-chaos | jq
-
+```
 
 # 获取chaoseresult信息
 
-
+```
 curl -s -k \
     -H "Authorization: Bearer $TOKEN" \
  $APISERVER/apis/litmuschaos.io/v1alpha1/namespaces/litmus/chaosresults/nginx-chaos-pod-delete | jq
-
+```
 
 # 解除rolebinding 并删除SA
 
