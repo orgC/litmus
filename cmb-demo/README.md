@@ -3,11 +3,20 @@
 
 # 部署 litmus
 
+```
+oc apply -f litmus-operator-v1.12.0.yaml
+```
 
 # 导入experiment 
 
+```
+oc apply -f experiments.yaml
+```
 
 # 创建SA 并添加权限 
+```
+oc apply -f rbac.yaml
+```
 
 
 # 手工 执行 pod-delete 试验 并 查看结果
